@@ -1,0 +1,10 @@
+Room No    | Type       | Status       | Rate     | Amenities                     
+--------------------------------------------------------------------------------------------
+101        | SINGLE     | AVAILABLE    | 100.00   | TV, Wi-Fi                     
+102        | DOUBLE     | AVAILABLE    | 150.00   | TV, Wi-Fi, Mini-bar           
+103        | SUITE      | AVAILABLE    | 200.00   | TV, WI-Fi, Mini-bar, Swimming Pool
+104        | SUITE      | MAINTENANCE  | 200.00   | TV, WI-Fi, Mini-bar, Swimming Pool
+101        | SINGLE     | AVAILABLE    | 100.00   | TV, Wi-Fi                     
+102        | DOUBLE     | AVAILABLE    | 150.00   | TV, Wi-Fi, Mini-bar           
+103        | SUITE      | AVAILABLE    | 200.00   | TV, WI-Fi, Mini-bar, Swimming Pool
+104        | SUITE      | MAINTENANCE  | 200.00   | TV, WI-Fi, Mini-bar, Swimming Pool
