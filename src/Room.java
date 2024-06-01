@@ -1,5 +1,11 @@
-import java.util.*;
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 enum RoomType {
     SINGLE, DOUBLE, SUITE
@@ -9,30 +15,193 @@ enum RoomStatus {
     AVAILABLE, OCCUPIED, MAINTENANCE
 }
 
-class Room{
+class Room extends JFrame {
+    private JButton addButton;
     private int roomNumber;
     private RoomType roomType;
     private RoomStatus roomStatus;
     private double rate;
-    private int floor;
     private List<String> amenities;
-    private List<Booking> bookings;
-    //private static final int HEADER_SIZE = 100;
-    private static final String ROOM_FILE = "room_details.txt";
-    private static final List<Integer> writtenRoomNumbers = new ArrayList<>();
+    private static final String[] COLUMN_NAMES = {"Room Number", "Room Type", "Status", "Rate", "Amenities"};
+    Date checkInDate;
+    Date checkOutDate;
 
-    public Room(int roomNumber, RoomType roomType, RoomStatus roomStatus, double rate, int floor, List<String> amenities) {
+    private static List<Room> rooms = new ArrayList<>();
+    public Room(int roomNumber, RoomType roomType, double rate, List<String> amenities) {
         this.roomNumber = roomNumber;
         this.roomType = roomType;
-        this.roomStatus = roomStatus;
+        this.roomStatus = RoomStatus.AVAILABLE;
         this.rate = rate;
-        this.floor = floor;
-        this.amenities = amenities;
-        //this.bookings = bookings;
+        this.amenities = new ArrayList<>(amenities);
+    }
+
+    public Room() {
+        super("Add A Room");
+        this.setBounds(450, 100, 600, 600);
+
+        // Load the background image
+        ImageIcon backgroundImage = new ImageIcon("C:\\Users\\SHAHBAZ TRADERS\\IdeaProjects\\Project1\\src\\download.jpg");
+        // Resize the image to fit the frame size
+        Image img = backgroundImage.getImage().getScaledInstance(600, 600, Image.SCALE_SMOOTH);
+        backgroundImage = new ImageIcon(img);
+
+        // Create a JLabel to hold the background image
+        JLabel backgroundLabel = new JLabel(backgroundImage);
+        backgroundLabel.setLayout(null);
+
+        // Create a JPanel to hold the form components
+        JPanel panel = new JPanel(null);
+        panel.setOpaque(false); // Make the panel transparent
+
+        // Your code for components
+        JLabel roomNumberLabel = new JLabel("Room Number:");
+        JTextField roomNumberField = new JTextField(10);
+        roomNumberLabel.setBounds(50, 50, 100, 30);
+        roomNumberField.setBounds(200, 50, 150, 30);
+        panel.add(roomNumberLabel);
+        panel.add(roomNumberField);
+
+        JLabel roomTypeLabel = new JLabel("Room Type:");
+        JComboBox<RoomType> roomTypeComboBox = new JComboBox<>();
+        roomTypeComboBox.addItem(RoomType.SINGLE);
+        roomTypeComboBox.addItem(RoomType.DOUBLE);
+        roomTypeComboBox.addItem(RoomType.SUITE);
+        roomTypeLabel.setBounds(50, 100, 100, 30);
+        roomTypeComboBox.setBounds(200, 100, 150, 30);
+        panel.add(roomTypeLabel);
+        panel.add(roomTypeComboBox);
+
+        JLabel rateLabel = new JLabel("Rate:");
+        JTextField rateField = new JTextField(10);
+        rateLabel.setBounds(50, 150, 100, 30);
+        rateField.setBounds(200, 150, 150, 30);
+        panel.add(rateLabel);
+        panel.add(rateField);
+
+        JLabel amenitiesLabel = new JLabel("Amenities:");
+        JTextField amenitiesField = new JTextField(10);
+        amenitiesLabel.setBounds(50, 200, 100, 30);
+        amenitiesField.setBounds(200, 200, 150, 30);
+        panel.add(amenitiesLabel);
+        panel.add(amenitiesField);
+
+        JButton addButton = new JButton("Add Room");
+        addButton.setBounds(150, 250, 120, 30);
+        panel.add(addButton);
+
+        // Set the size and position of the panel
+        panel.setBounds((600 - 400) / 2, (600 - 300) / 2, 400, 300);
+
+        // Add the panel with components to the background label
+        backgroundLabel.add(panel);
+
+        // Set the background label as the content pane of the frame
+        setContentPane(backgroundLabel);
+
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setVisible(true);
+
+        addButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    int roomNumber = Integer.parseInt(roomNumberField.getText());
+                    RoomType roomType = (RoomType) roomTypeComboBox.getSelectedItem();
+                    double rate = Double.parseDouble(rateField.getText());
+                    String[] amenitiesArray = amenitiesField.getText().split(",");
+                    List<String> amenities = new ArrayList<>();
+                    for (String amenity : amenitiesArray) {
+                        amenities.add(amenity.trim());
+                    }
+
+                    // Call the saveRoom method with the room details
+                    Room room = new Room(roomNumber, roomType, rate, amenities);
+                    HotelManagementSystem.addRoom(room);
+                    JOptionPane.showMessageDialog(null, "Room added Successfully");
+                    // Write room details to the file
+                    writeRoomToFile(room);
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(Room.this, "Invalid input for room number or rate.");
+                }
+            }
+        });
+    }
+
+
+
+
+    public void setCheckInDate(Date checkInDate)
+    {
+        this.checkInDate = checkInDate;
+    }
+
+    public void setCheckOutDate(Date checkOutDate)
+    {
+        this.checkOutDate = checkOutDate;
+    }
+
+    private void writeRoomToFile(Room room) {
+        String filePath = "RoomDetails.txt";
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath, true))) {
+            writer.write(room.getRoomDetails());
+            writer.newLine(); // Adding a newline after each room's details
+            System.out.println("Room successfully written to the file.");
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(this, "An error occurred while writing to the file: " + ex.getMessage());
+        }
+    }
+
+    private static List<Room> readRoomsFromFile(String filePath) {
+
+        rooms = new ArrayList<>();
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split("\\s*\\|\\s*");
+                int roomNumber = Integer.parseInt(parts[0].trim());
+                RoomType roomType = RoomType.valueOf(parts[1].trim());
+                RoomStatus roomStatus = RoomStatus.valueOf(parts[2].trim());
+                double rate = Double.parseDouble(parts[3].trim());
+                List<String> amenities = new ArrayList<>();
+                for (int i = 4; i < parts.length; i++) {
+                    amenities.add(parts[i].trim());
+                }
+                Room room = new Room(roomNumber, roomType, rate, amenities);
+                rooms.add(room);
+
+                System.out.println("Added room: " + room);
+            }
+        } catch (IOException | IllegalArgumentException | ArrayIndexOutOfBoundsException ex) {
+            JOptionPane.showMessageDialog(null, "An error occurred while reading from the file: " + ex.getMessage());
+        }
+        return rooms;
+    }
+
+    public static List<Room> getRooms() {
+        return rooms;
+    }
+
+    private static void populateTable(JTable roomTable, List<Room> rooms) {
+        DefaultTableModel tableModel = (DefaultTableModel) roomTable.getModel();
+        for (Room room : rooms) {
+            Object[] rowData = {
+                    room.getRoomNumber(),
+                    room.getRoomType(),
+                    room.getRoomStatus(),
+                    room.getRate(),
+                    String.join(", ", room.getAmenities())
+            };
+            tableModel.addRow(rowData);
+        }
     }
 
     public int getRoomNumber() {
         return roomNumber;
+    }
+
+    public RoomType getRoomType() {
+        return roomType;
     }
 
     public RoomStatus getRoomStatus() {
@@ -47,6 +216,14 @@ class Room{
         return rate;
     }
 
+    public Date getCheckInDate() {
+        return checkInDate;
+    }
+
+    public Date getCheckOutDate() {
+        return checkOutDate;
+    }
+
     public List<String> getAmenities() {
         return amenities;
     }
@@ -59,19 +236,6 @@ class Room{
 
     public void removeAmenity(String amenity) {
         amenities.remove(amenity);
-    }
-
-    public int getFloor() {
-        return floor;
-    }
-
-    public void allocateRoom() {
-        if (this.roomStatus == RoomStatus.AVAILABLE) {
-            this.roomStatus = RoomStatus.OCCUPIED;
-            System.out.println("Room " + roomNumber + " has been allocated.");
-        } else {
-            System.out.println("Room " + roomNumber + " is not available for allocation.");
-        }
     }
 
     public void deallocateRoom() {
@@ -93,96 +257,25 @@ class Room{
     }
 
     public String getRoomDetails() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(String.format("%-10d | %-10s | %-12s | %-8.2f | %-30s%n",
-                roomNumber, roomType, roomStatus, rate, String.join(", ", amenities)));
-        return sb.toString();
+        return String.format("%-10d | %-10s | %-12s | %-8.2f | %-30s",
+                roomNumber, roomType, roomStatus, rate, String.join(", ", amenities));
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Room room = (Room) o;
+        return roomNumber == room.roomNumber;
     }
 
-  /*  private static boolean isHeaderWritten(String filename) {
-        File file = new File(ROOM_FILE);
-        return file.length() > HEADER_SIZE;
-    }*/
-
-
-    public static void writeRoomsDetailsToFile(List<Room> rooms, String filename) {
-        //boolean headerWritten = isHeaderWritten(filename);
-
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename, true))) {
-
-            boolean isEmpty = new File(ROOM_FILE).length() == 0;
-            if (isEmpty) {
-                writer.write(String.format("%-10s | %-10s | %-12s | %-8s | %-30s%n", "Room No", "Type", "Status", "Rate", "Amenities"));
-                writer.write("--------------------------------------------------------------------------------------------\n");
-            }
-
-            for (Room room : rooms) {
-
-                    writer.write(room.getRoomDetails());
-                    writtenRoomNumbers.add(room.roomNumber);
-            }
-        } catch (IOException e) {
-            System.err.println("Error writing to file: " + e.getMessage());
-        }
+    @Override
+    public String toString() {
+        return "Room{" +
+                "roomNumber=" + roomNumber +
+                ", roomType=" + roomType +
+                ", roomStatus=" + roomStatus +
+                ", rate=" + rate +
+                ", amenities=" + amenities +
+                '}';
     }
-
-    public boolean isAvailable(Date checkInDate, Date checkOutDate) {
-        for (Booking booking : bookings) {
-            if ((checkInDate.isBefore(booking.getCheckOutDate()) && checkOutDate.isAfter(booking.getCheckInDate())) ||
-                    checkInDate.isEqual(booking.getCheckInDate()) || checkOutDate.isEqual(booking.getCheckOutDate())) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    public RoomType getRoomType() {
-        return roomType;
-    }
-
-    public void addBooking(Booking booking) {
-        bookings.add(booking);
-    }
-
-    public List<Booking> getBookings() {
-        return bookings;
-    }
-
-    /*public static void readRoomsDetailsFromFile(List<Room> rooms, String filename) {
-        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
-            String line;
-            // Skip the header lines
-            reader.readLine(); // Skip the header line
-            reader.readLine(); // Skip the separator line
-
-            while ((line = reader.readLine()) != null) {
-                String[] parts = line.split("\\|");
-                int roomNumber = Integer.parseInt(parts[0].trim());
-                RoomType roomType = RoomType.valueOf(parts[1].trim());
-                RoomStatus roomStatus = RoomStatus.valueOf(parts[2].trim());
-                double rate = Double.parseDouble(parts[3].trim());
-                int floor = Integer.parseInt(parts[4].trim());
-                List<String> amenities = Arrays.asList(parts[5].trim().split(","));
-
-                // Parse booking details
-                List<Booking> bookings = new ArrayList<>();
-                if (parts.length > 6) {
-                    String[] bookingDetails = parts[6].trim().split(",");
-                    for (String bookingDetail : bookingDetails) {
-                        int bookingId = Integer.parseInt(bookingDetail.trim()); // Assuming booking details are booking IDs
-                        // Create a booking with default values (adjust as needed)
-                        Booking booking = new Booking(bookingId, null, null, 0, 1, null, null, 121, null);
-                        bookings.add(booking);
-                    }
-                }
-
-                Room room = new Room(roomNumber, roomType, roomStatus, rate, floor, amenities, bookings);
-                rooms.add(room);
-            }
-        } catch (IOException e) {
-            System.err.println("Error reading from file: " + e.getMessage());
-        }
-    }*/
-
-
 }

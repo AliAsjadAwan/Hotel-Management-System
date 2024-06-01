@@ -1,0 +1,5 @@
+ Booking ID: 545, Guest Name: Ali, Guest ID: Customer 1, Guest Email: assaa, Room Number: 102, Booking Days: 5, Total Bill: 825.0
+ Booking ID: 294, Guest Name: Ali, Guest ID: Customer 1, Guest Email: aadad, Room Number: 102, Booking Days: 4, Total Bill: 660.0
+ Booking ID: 695, Guest Name: Ali, Guest ID: Customer 1, Guest Email: aaa, Room Number: 102, Booking Days: 3, Total Bill: 495.0
+ Booking ID: 802, Guest Name: ali, Guest ID: Customer 1, Guest Email: aaa, Room Number: 102, Booking Days: 5, Total Bill: 825.0
+ Booking ID: 182, Guest Name: Mubeen, Guest ID: Customer 1, Guest Email: Ali@gmail.com, Room Number: 104, Booking Days: 5, Total Bill: 1060.0

@@ -1,35 +1,28 @@
+
+
+import java.util.Date;
 import java.util.List;
 
-enum booking{
-    ATTHESPOT,ADVANCE
-}
 
-enum BookingStatus {
-    PENDING, CONFIRMED, CANCELLED
-}
-
-class Booking extends Room{
+class Booking{
+    private  Room room;
     private int bookingId;
     private Guest guest;
-    private Room room;
-    private BookingStatus bookingStatus;
-    private String paymentStatus;
+    private int Bookingdays;
+
+
     private Date bookingDate;
-    private Date checkInDate;
-    private Date checkOutDate;
 
+    public Booking( int bookingId, Guest guest, Room room,int Bookingdays) {
 
-    public Booking(int roomNumber, RoomType roomType, RoomStatus roomStatus, double rate, int floor, List<String> amenities, int bookingId, Guest guest, Room room, BookingStatus bookingStatus, String paymentStatus, Date bookingDate, Date checkInDate, Date checkOutDate) {
-        super(roomNumber, roomType, roomStatus, rate, floor, amenities);
         this.bookingId = bookingId;
         this.guest = guest;
         this.room = room;
-        this.bookingStatus = bookingStatus;
-        this.paymentStatus = paymentStatus;
-        this.bookingDate = bookingDate;
-        this.checkInDate = checkInDate;
-        this.checkOutDate = checkOutDate;
+
+        this.Bookingdays=Bookingdays;
     }
+
+
 
     public int getBookingId() {
         return bookingId;
@@ -38,26 +31,11 @@ class Booking extends Room{
     public Guest getGuest() {
         return guest;
     }
-
     public Room getRoom() {
         return room;
     }
 
-    public BookingStatus getBookingStatus() {
-        return bookingStatus;
-    }
 
-    public void setBookingStatus(BookingStatus bookingStatus) {
-        this.bookingStatus = bookingStatus;
-    }
-
-    public String getPaymentStatus() {
-        return paymentStatus;
-    }
-
-    public void setPaymentStatus(String paymentStatus) {
-        this.paymentStatus = paymentStatus;
-    }
 
     public Date getBookingDate() {
         return bookingDate;
@@ -67,20 +45,23 @@ class Booking extends Room{
         this.bookingDate = bookingDate;
     }
 
-    public Date getCheckInDate() {
-        return checkInDate;
+    public void setRoom(Room room) {
+        this.room = room;
     }
 
-    public void setCheckInDate(Date checkInDate) {
-        this.checkInDate = checkInDate;
+    public void setBookingId(int bookingId) {
+        this.bookingId = bookingId;
     }
 
-    public Date getCheckOutDate() {
-        return checkOutDate;
+    public void setGuest(Guest guest) {
+        this.guest = guest;
     }
 
-    public void setCheckOutDate(Date checkOutDate) {
-        this.checkOutDate = checkOutDate;
+    public int getBookingdays() {
+        return Bookingdays;
     }
 
+    public void setBookingdays(int bookingdays) {
+        Bookingdays = bookingdays;
+    }
 }

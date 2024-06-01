@@ -1,4 +1,4 @@
-package HMS;
+/*package HMS;
 
 import javax.swing.*;
 import java.awt.*;
@@ -253,3 +253,4 @@ public class Hotel extends JFrame {
         }
     }
 //    }
+}*/
