@@ -1,0 +1,6 @@
+Booking ID | Guest Name | Guest ID | Guest Email | Room Number | Booking Days | Total Bill
+--------------------------------------------------------------------------------------------
+74457      | Ali                  | Customer 1 | Ali@gmail.com                  | 101          | 4            | 480.00    
+74457      | Ali                  | Customer 1 | Ali@gmail.com                  | 101          | 4            | 480.00    
+13558      | Sufyan               | Customer 1 | sufyan@gmail.com               | 103          | 3            | 1020.00   
+9322       | Ibrahim              | Customer 1 | ibrahim@gmail.com              | 102          | 3            | 660.00    

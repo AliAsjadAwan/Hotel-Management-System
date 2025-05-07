@@ -1,20 +1,19 @@
-
+package Hotel_Management_System;
 
 import javax.swing.*;
 import java.awt.*;
 import java.io.*;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 public class BillForm extends JFrame {
     JLabel billLabel;
-    private Room selectedRoom;
-    private Guest guest;
+    private final Room selectedRoom;
+    private final Guest guest;
 
     JLabel billLabelValue;
-    private int bookingId;
-    private int bookingDays;
+    private final int bookingId;
+    private final int bookingDays;
 
     public BillForm(Room selectedRoom, Guest guest, int bookingId, int bookingDays) {
         this.selectedRoom = selectedRoom;
@@ -36,7 +35,7 @@ public class BillForm extends JFrame {
         JLabel roomTypeLabel = new JLabel("Room Type:");
         JLabel roomTypeValueLabel = new JLabel(String.valueOf(selectedRoom.getRoomType()));
         JLabel roomPriceLabel = new JLabel("Room Rate:");
-        JLabel roomPricealueLabel = new JLabel(String.valueOf(selectedRoom.getRate()));
+        JLabel roomPriceValueLabel = new JLabel(String.valueOf(selectedRoom.getRate()));
         JLabel roomAmenitiesLabel = new JLabel("Room Amenities:");
         JLabel roomAmenitiesValueLabel = new JLabel(String.valueOf(selectedRoom.getAmenities()));
         JLabel guestLabel = new JLabel("Guest Name:");
@@ -46,11 +45,7 @@ public class BillForm extends JFrame {
         JLabel guestEmailLabel = new JLabel("Guest Email:");
         JLabel guestEmailValueLabel = new JLabel(guest.getCustomerEmail());
 
-//        JLabel bookingDateLabel = new JLabel("Booking Date:");
-//        JLabel bookingDateValueLabel = new JLabel(new SimpleDateFormat("yyyy-MM-dd").format(bookingDate));
-//        JLabel checkInDateLabel = new JLabel("Check-in Date:");
-//        JLabel checkInDateValueLabel = new JLabel(new SimpleDateFormat("yyyy-MM-dd").format(checkInDate));
-        JLabel bookLablDy = new JLabel("Book Days:");
+        JLabel bookLabel = new JLabel("Book Days:");
         JLabel bookDateValueLabel = new JLabel(String.valueOf(bookingDays));
 
         JLabel bookingIdLabel = new JLabel("Booking ID:");
@@ -66,7 +61,7 @@ public class BillForm extends JFrame {
         panel.add(roomTypeLabel);
         panel.add(roomTypeValueLabel);
         panel.add(roomPriceLabel);
-        panel.add(roomPricealueLabel);
+        panel.add(roomPriceValueLabel);
         panel.add(roomAmenitiesLabel);
         panel.add(roomAmenitiesValueLabel);
         panel.add(guestLabel);
@@ -75,19 +70,15 @@ public class BillForm extends JFrame {
         panel.add(guestEmailValueLabel);
         panel.add(guestIdLabel);
         panel.add(guestIdValueLabel);
-        panel.add(bookLablDy);
+        panel.add(bookLabel);
         panel.add(bookDateValueLabel);
-//        panel.add(checkInDateLabel);
-//        panel.add(checkInDateValueLabel);
-//        panel.add(checkOutDateLabel);
-//        panel.add(checkOutDateValueLabel);
         panel.add(bookingIdLabel);
         panel.add(bookingIdValueLabel);
 
         add(panel);
         setVisible(true);
         displayBill();
-        writeToFile("cilent.txt");
+        writeToFile("client.txt");
         writeToFile2("RoomDetails.txt");
         writeToFile3("Customer.txt");
     }
@@ -106,16 +97,7 @@ public class BillForm extends JFrame {
     public void writeToFile(String filename) {
         try (PrintWriter writer = new PrintWriter(new FileWriter(filename, true))) {
             // Concatenate all the necessary information with commas
-            writer.println("Room Number: " + selectedRoom.getRoomNumber() +
-                    ", Room Type: " + selectedRoom.getRoomType() +
-                    ", Room Rate: " + selectedRoom.getRate() +
-                    ", Room Amenities: " + selectedRoom.getAmenities() +
-                    ", Guest Name: " + guest.getCustomerName() +
-                    ", Guest ID: " + guest.getCustomerId() +
-                    ", Guest Email: " + guest.getCustomerEmail() +
-                    ", Booking Days: " + bookingDays +
-                    ", Booking ID: " + bookingId +
-                    ", Total Bill: " + calculateBill(bookingDays)); // Assuming calculateBill() calculates the total bill
+            writer.println(STR."Room Number: \{selectedRoom.getRoomNumber()}, Room Type: \{selectedRoom.getRoomType()}, Room Rate: \{selectedRoom.getRate()}, Room Amenities: \{selectedRoom.getAmenities()}, Guest Name: \{guest.getCustomerName()}, Guest ID: \{guest.getCustomerId()}, Guest Email: \{guest.getCustomerEmail()}, Booking Days: \{bookingDays}, Booking ID: \{bookingId}, Total Bill: \{calculateBill(bookingDays)}"); // Assuming calculateBill() calculates the total bill
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -123,7 +105,7 @@ public class BillForm extends JFrame {
 
     private void displayBill() {
         double billAmount = calculateBill(bookingDays);
-        billLabelValue.setText("$" + billAmount); // Set the value of BillLabelValue
+        billLabelValue.setText(STR."$\{billAmount}"); // Set the value of BillLabelValue
     }
 
     public void writeToFile2(String filename) {
@@ -132,7 +114,7 @@ public class BillForm extends JFrame {
         try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                if (line.startsWith(selectedRoom.getRoomNumber() + " ")) {
+                if (line.startsWith(STR."\{selectedRoom.getRoomNumber()} ")) {
                     lines.add(line.replace("AVAILABLE", "OCCUPIED"));
                 } else {
                     lines.add(line);
@@ -156,15 +138,10 @@ public class BillForm extends JFrame {
         try (PrintWriter writer = new PrintWriter(new FileWriter(filename, true))) {
             // Concatenate all the necessary information with commas
             writer.println(
-                    " Booking ID: " + bookingId +
-                            ", Guest Name: " + guest.getCustomerName() +
-                            ", Guest ID: " + guest.getCustomerId() +
-                            ", Guest Email: " + guest.getCustomerEmail() +
-                            ", Room Number: " + selectedRoom.getRoomNumber() +
-                            ", Booking Days: " + bookingDays +
-                            ", Total Bill: " + calculateBill(bookingDays));
+                    STR." Booking ID: \{bookingId}, Guest Name: \{guest.getCustomerName()}, Guest ID: \{guest.getCustomerId()}, Guest Email: \{guest.getCustomerEmail()}, Room Number: \{selectedRoom.getRoomNumber()}, Booking Days: \{bookingDays}, Total Bill: \{calculateBill(bookingDays)}");
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
 }

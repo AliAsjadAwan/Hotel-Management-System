@@ -1,3 +1,5 @@
+package Hotel_Management_System;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
@@ -30,7 +32,7 @@ public class Employee {
         int positiveFeedbacks = 0;
         int negativeFeedbacks = 0;
         for (Feedback feedback : feedbacks) {
-            if (feedback.isPositive()) {
+            if (feedback.positive()) {
                 positiveFeedbacks++;
             } else {
                 negativeFeedbacks++;
@@ -52,7 +54,7 @@ public class Employee {
     public static void addEmployee(List<Employee> employees, int employeeId, String name, double hourlyWage, String role) {
         for (Employee employee : employees) {
             if (employee.getId() == employeeId) {
-                System.out.println("Employee with ID " + employeeId + " already exists.");
+                System.out.println(STR."Employee with ID \{employeeId} already exists.");
                 return;
             }
         }
@@ -72,7 +74,7 @@ public class Employee {
                 return;
         }
         System.out.println("Employee added successfully.");
-        writeEmployeeDetailsToFile(employees, "employee_details.txt");
+        writeEmployeeDetailsToFile(employees);
     }
 
     public static void removeEmployee(List<Employee> employees, int employeeId) {
@@ -86,14 +88,14 @@ public class Employee {
         if (employeeToRemove != null) {
             employees.remove(employeeToRemove);
             System.out.println("Employee removed successfully.");
-            writeEmployeeDetailsToFile(employees, "employee_details.txt");
+            writeEmployeeDetailsToFile(employees);
         } else {
-            System.out.println("Employee with ID " + employeeId + " does not exist.");
+            System.out.println(STR."Employee with ID \{employeeId} does not exist.");
         }
     }
 
-    private static void writeEmployeeDetailsToFile(List<Employee> employees, String fileName) {
-        try (PrintWriter writer = new PrintWriter(new FileWriter(fileName))) {
+    private static void writeEmployeeDetailsToFile(List<Employee> employees) {
+        try (PrintWriter writer = new PrintWriter(new FileWriter("employee_details.txt"))) {
             StringBuilder sb = new StringBuilder();
             sb.append(String.format("%-12s | %-20s | %-15s%n", "Employee ID", "Name", "Role"));
 
@@ -101,10 +103,10 @@ public class Employee {
                 sb.append(String.format("%-12d | %-20s | %-15s%n", employee.getId(), employee.getName(), employee.getClass().getSimpleName()));
             }
 
-            writer.print(sb.toString());
+            writer.print(sb);
             System.out.println("Employee details written to file successfully.");
         } catch (IOException e) {
-            System.out.println("Error writing to file: " + e.getMessage());
+            System.out.println(STR."Error writing to file: \{e.getMessage()}");
         }
     }
 
@@ -136,13 +138,13 @@ public class Employee {
             }
             System.out.println("Employee details read from file successfully.");
         } catch (Exception e) {
-            System.out.println("Error reading from file: " + e.getMessage());
+            System.out.println(STR."Error reading from file: \{e.getMessage()}");
         }
         return employees;
     }
 
     public static class Waiter extends Employee {
-        private List<Order> currentOrders;
+        private final List<Order> currentOrders;
 
         public Waiter(int id, String name, double hourlyWage) {
             super(id, name, hourlyWage);
@@ -174,16 +176,7 @@ public class Employee {
         }
     }
 
-    public static class Feedback {
-        private boolean positive;
-
-        public Feedback(boolean positive) {
-            this.positive = positive;
-        }
-
-        public boolean isPositive() {
-            return positive;
-        }
+    public record Feedback(boolean positive) {
     }
 
     public static class Order {
@@ -191,16 +184,14 @@ public class Employee {
     }
 
     public static class EmployeeManagementApp {
-        private JFrame frame;
-        private JTextField idField;
-        private JTextField nameField;
-        private JTextField wageField;
+        private final JFrame frame;
+        private final JTextField idField;
+        private final JTextField nameField;
+        private final JTextField wageField;
         private JTextField removeIdField;
-        private JComboBox<String> roleComboBox;
-        private JTextArea displayArea;
-        private List<Employee> employees;
+        private final JComboBox<String> roleComboBox;
+        private final List<Employee> employees;
         private DefaultTableModel tableModel;
-        private JTable employeeTable;
 
         public EmployeeManagementApp() {
             employees = readEmployees("employee_details.txt");
@@ -229,33 +220,18 @@ public class Employee {
             panel.add(roleComboBox);
 
             JButton addButton = new JButton("Add Employee");
-            addButton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    addEmployee();
-                }
-            });
+            addButton.addActionListener(_ -> addEmployee());
             panel.add(addButton);
 
             JButton removeButton = new JButton("Remove Employee");
-            removeButton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    showRemoveEmployeeDialog();
-                }
-            });
+            removeButton.addActionListener(_ -> showRemoveEmployeeDialog());
             panel.add(removeButton);
 
             JButton displayTableButton = new JButton("Display Employees in Table");
-            displayTableButton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    displayEmployeesInTable();
-                }
-            });
+            displayTableButton.addActionListener(_ -> displayEmployeesInTable());
             panel.add(displayTableButton);
 
-            displayArea = new JTextArea();
+            JTextArea displayArea = new JTextArea();
             displayArea.setEditable(false);
             JScrollPane scrollPane = new JScrollPane(displayArea);
 
@@ -296,12 +272,7 @@ public class Employee {
             panel.add(removeIdField);
 
             JButton removeButton = new JButton("Remove");
-            removeButton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    removeEmployee(removeEmployeeFrame);
-                }
-            });
+            removeButton.addActionListener(_ -> removeEmployee(removeEmployeeFrame));
             panel.add(removeButton);
 
             removeEmployeeFrame.setVisible(true);
@@ -320,14 +291,14 @@ public class Employee {
                 }
 
                 if (found) {
-                    int option = JOptionPane.showConfirmDialog(frame, "Are you sure you want to remove employee with ID " + id + "?", "Confirmation", JOptionPane.YES_NO_OPTION);
+                    int option = JOptionPane.showConfirmDialog(frame, STR."Are you sure you want to remove employee with ID \{id}?", "Confirmation", JOptionPane.YES_NO_OPTION);
                     if (option == JOptionPane.YES_OPTION) {
                         Employee.removeEmployee(employees, id);
                         updateTableModel();
                         removeEmployeeFrame.dispose();
                     }
                 } else {
-                    JOptionPane.showMessageDialog(removeEmployeeFrame, "Employee with ID " + id + " does not exist. Please enter a valid ID.", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(removeEmployeeFrame, STR."Employee with ID \{id} does not exist. Please enter a valid ID.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             } catch (NumberFormatException e) {
                 JOptionPane.showMessageDialog(removeEmployeeFrame, "Invalid input. Please enter valid data.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -346,7 +317,7 @@ public class Employee {
                 tableModel.addRow(row);
             }
 
-            employeeTable = new JTable(tableModel);
+            JTable employeeTable = new JTable(tableModel);
             JScrollPane scrollPane = new JScrollPane(employeeTable);
 
             tableFrame.add(scrollPane);
@@ -377,8 +348,8 @@ public class Employee {
 }
 
 class Waiter extends Employee {
-    private int floor;
-    private List<Order> currentOrders;
+    private final int floor;
+    private final List<Order> currentOrders;
 
     public Waiter(int id, String name, double hourlyWage, int floor) {
         super(id, name, hourlyWage);
@@ -405,7 +376,7 @@ class Waiter extends Employee {
     public  void addEmployee(List<Waiter> waiters, int employeeId, String name, double hourlyWage, int floor) {
         for (Waiter waiter : waiters) {
             if (waiter.getId() == employeeId) {
-                System.out.println("Employee with ID " + employeeId + " already exists.");
+                System.out.println(STR."Employee with ID \{employeeId} already exists.");
                 return;
             }
         }
@@ -432,7 +403,7 @@ class Waiter extends Employee {
             writer.print(sb.toString());
             System.out.println("Employee details written to file successfully.");
         } catch (IOException e) {
-            System.out.println("Error writing to file: " + e.getMessage());
+            System.out.println(STR."Error writing to file: \{e.getMessage()}");
         }
     }
 
@@ -453,17 +424,14 @@ class Waiter extends Employee {
             }
             System.out.println("Employee details read from file successfully.");
         } catch (FileNotFoundException e) {
-            System.out.println("File not found: " + e.getMessage());
+            System.out.println(STR."File not found: \{e.getMessage()}");
         }
         return waiters;
     }
 }
 
 
-//import java.util.*;
-//      import java.io.*;
-
- class Manager extends Employee {
+class Manager extends Employee {
     public Manager(int id, String name, double hourlyWage) {
         super(id, name, hourlyWage);
     }
@@ -471,7 +439,7 @@ class Waiter extends Employee {
     public void addEmployee(List<Manager> managers, int employeeId, String name, double hourlyWage) {
         for (Manager manager : managers) {
             if (manager.getId() == employeeId) {
-                System.out.println("Employee with ID " + employeeId + " already exists.");
+                System.out.println(STR."Employee with ID \{employeeId} already exists.");
                 return;
             }
         }
@@ -496,7 +464,7 @@ class Waiter extends Employee {
             writer.print(sb.toString());
             System.out.println("Employee details written to file successfully.");
         } catch (IOException e) {
-            System.out.println("Error writing to file: " + e.getMessage());
+            System.out.println(STR."Error writing to file: \{e.getMessage()}");
         }
     }
 
@@ -516,7 +484,7 @@ class Waiter extends Employee {
             }
             System.out.println("Employee details read from file successfully.");
         } catch (FileNotFoundException e) {
-            System.out.println("File not found: " + e.getMessage());
+            System.out.println(STR."File not found: \{e.getMessage()}");
         }
         return managers;
     }
@@ -550,8 +518,6 @@ class Waiter extends Employee {
         add(panel1);
 
 
-//            this.setSize(500, 500);
-//            this.getContentPane().setBackground(Color.lightGray);
         this.setResizable(false);
         //this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLayout(null);
@@ -569,11 +535,6 @@ class Waiter extends Employee {
         Booking.setForeground(Color.WHITE);
         panel1.add(Booking);
 
-//        CheckIn = new JButton("Check In");
-//        CheckIn.setBounds(30,110,200,30);
-//        CheckIn.setBackground(Color.BLACK);
-//        CheckIn.setForeground(Color.WHITE);
-//        panel1.add(CheckIn);
 
         Checkout = new JButton("Checkout");
         Checkout.setBounds(30,110,200,30);
@@ -605,7 +566,7 @@ class Waiter extends Employee {
         Order.setForeground(Color.WHITE);
         panel1.add(Order);
 
-        ImageIcon logoIcon = new ImageIcon("C:\\Users\\SHAHBAZ TRADERS\\IdeaProjects\\Project1\\src\\Logo.jpg");
+        ImageIcon logoIcon = new ImageIcon("Visuals/Logo.jpg");
         JLabel logoLabel = new JLabel(logoIcon);
         int logoWidth = logoIcon.getIconWidth();
         int logoHeight = logoIcon.getIconHeight();
@@ -621,7 +582,6 @@ class Waiter extends Employee {
         // Set focusable to false for each button
         ViewRoom.setFocusable(false);
         Booking.setFocusable(false);
-        //CheckIn.setFocusable(false);
         Checkout.setFocusable(false);
         UpdateRoom.setFocusable(false);
         UpdateBooking.setFocusable(false);
@@ -629,30 +589,10 @@ class Waiter extends Employee {
         Order.setFocusable(false);
         Logout.setFocusable(false);
 
-        // Set bounds for each button
-//            ViewRoom.setBounds(100, 160, 200, 30);
-//            Booking.setBounds(100, 210, 200, 30);
-//            CheckIn.setBounds(100, 260, 200, 30);
-//            Checkout.setBounds(100, 310, 200, 30);
-//            UpdateRoom.setBounds(100, 360, 200, 30);
-//            UpdateBooking.setBounds(100, 410, 200, 30);
-//            ViewWaiter.setBounds(100, 460, 200, 30);
-//            Order.setBounds(100, 510, 200, 30);
-//
-//            // Add buttons to the frame
-//            add(ViewRoom);
-//            add(Booking);
-//            add(CheckIn);
-//            add(Checkout);
-//            add(UpdateRoom);
-//            add(UpdateBooking);
-//            add(ViewWaiter);
-//            add(Order);
 
         // Add action listeners
         ViewRoom.addActionListener(this);
         Booking.addActionListener(this);
-        //CheckIn.addActionListener(this);
         Checkout.addActionListener(this);
         UpdateRoom.addActionListener(this);
         UpdateBooking.addActionListener(this);
@@ -662,19 +602,13 @@ class Waiter extends Employee {
         setVisible(true);
     }
 
-//        ViewRoom.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                Room.TableGui(); // Create an instance of Room
-//            }
-//        });
 
 
     @Override
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
         if (source == ViewRoom) {
-            HotelManagementSystem.showAllRoomDetails();
+            new ViewRoomForm();
         }
         else if (source == Booking) {
             HotelManagementSystem hms  =new HotelManagementSystem();
@@ -699,6 +633,5 @@ class Waiter extends Employee {
      public static void main(String[] args) {
          new Recipcinoist();
      }
-
 
 }

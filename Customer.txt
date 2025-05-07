@@ -3,3 +3,11 @@
  Booking ID: 695, Guest Name: Ali, Guest ID: Customer 1, Guest Email: aaa, Room Number: 102, Booking Days: 3, Total Bill: 495.0
  Booking ID: 802, Guest Name: ali, Guest ID: Customer 1, Guest Email: aaa, Room Number: 102, Booking Days: 5, Total Bill: 825.0
  Booking ID: 182, Guest Name: Mubeen, Guest ID: Customer 1, Guest Email: Ali@gmail.com, Room Number: 104, Booking Days: 5, Total Bill: 1060.0
+ Booking ID: 400, Guest Name: Ali, Guest ID: Customer 1, Guest Email: ali@gmail.com, Room Number: 106, Booking Days: 4, Total Bill: 1760.0
+ Booking ID: 898, Guest Name: Umar, Guest ID: Customer 1, Guest Email: umar@gmail.com, Room Number: 105, Booking Days: 6, Total Bill: 1380.0
+ Booking ID: 23993, Guest Name: Waqas, Guest ID: Customer 1, Guest Email: waqas@gmail.com, Room Number: 108, Booking Days: 3, Total Bill: 1320.0
+ Booking ID: 52059, Guest Name: Ali, Guest ID: Customer 1, Guest Email: ahvsavhja, Room Number: 106, Booking Days: 4, Total Bill: 1760.0
+ Booking ID: 46017, Guest Name: Hussain, Guest ID: Customer 1, Guest Email: hussain@gmail.com, Room Number: 106, Booking Days: 3, Total Bill: 1320.0
+ Booking ID: 82728, Guest Name: Ahmed, Guest ID: Customer 1, Guest Email: ahmed@gmail.com, Room Number: 101, Booking Days: 2, Total Bill: 254.4
+ Booking ID: 31179, Guest Name: Hassan, Guest ID: Customer 1, Guest Email: Hassan@gmai.com, Room Number: 105, Booking Days: 5, Total Bill: 1650.0
+ Booking ID: 51002, Guest Name: Ali, Guest ID: Customer 1, Guest Email: ali@gmail.com, Room Number: 101, Booking Days: 4, Total Bill: 508.8

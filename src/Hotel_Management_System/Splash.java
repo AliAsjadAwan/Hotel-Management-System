@@ -1,10 +1,12 @@
+package Hotel_Management_System;
+
 import javax.swing.*;
 import java.awt.*;
 
 public class Splash extends JFrame {
     Splash() {
         // Load the image icon
-        ImageIcon imageIcon = new ImageIcon(ClassLoader.getSystemResource("lv_0_20240530170505.gif"));
+        ImageIcon imageIcon = new ImageIcon(ClassLoader.getSystemResource("Visuals/lv_0_20240530170505.gif"));
         JLabel label = new JLabel(imageIcon);
 
         // Get the screen dimensions

@@ -1,2 +1,3 @@
 Employee ID  | Name                 | Role           
 102          | Ali                  | Waiter         
+103          | Waqas                | Receptionist   

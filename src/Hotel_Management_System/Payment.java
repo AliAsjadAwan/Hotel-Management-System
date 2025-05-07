@@ -1,3 +1,5 @@
+package Hotel_Management_System;
+
 class Payment {
     private int paymentId;
     private Booking booking;

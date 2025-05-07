@@ -1,3 +1,5 @@
+package Hotel_Management_System;
+
 import java.text.ParseException;
 
 public class Date {

@@ -1,0 +1,5 @@
+Room Number: 106, Room Type: DOUBLE, Room Rate: 400.0, Room Amenities: [TV, WI-Fi, Mini-bar], Guest Name: Ali, Guest ID: Customer 1, Guest Email: ahvsavhja, Booking Days: 4, Booking ID: 52059, Total Bill: 1760.0
+Room Number: 106, Room Type: DOUBLE, Room Rate: 400.0, Room Amenities: [TV, Wi-Fi, Mini-bar], Guest Name: Hussain, Guest ID: Customer 1, Guest Email: hussain@gmail.com, Booking Days: 3, Booking ID: 46017, Total Bill: 1320.0
+Room Number: 101, Room Type: SINGLE, Room Rate: 120.0, Room Amenities: [WIFI], Guest Name: Ahmed, Guest ID: Customer 1, Guest Email: ahmed@gmail.com, Booking Days: 2, Booking ID: 82728, Total Bill: 254.4
+Room Number: 105, Room Type: DOUBLE, Room Rate: 300.0, Room Amenities: [All], Guest Name: Hassan, Guest ID: Customer 1, Guest Email: Hassan@gmai.com, Booking Days: 5, Booking ID: 31179, Total Bill: 1650.0
+Room Number: 101, Room Type: SINGLE, Room Rate: 120.0, Room Amenities: [WIFI                          Room No102], Guest Name: Ali, Guest ID: Customer 1, Guest Email: ali@gmail.com, Booking Days: 4, Booking ID: 51002, Total Bill: 508.8

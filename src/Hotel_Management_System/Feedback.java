@@ -1,6 +1,8 @@
+package Hotel_Management_System;
+
 public class Feedback {
-    private int rating; // Rating out of 5
-    private String comments;
+    private final int rating; // Rating out of 5
+    private final String comments;
 
     public Feedback(int rating, String comments) {
         this.rating = rating;

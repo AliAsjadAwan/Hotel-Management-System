@@ -1,7 +1,9 @@
+package Hotel_Management_System;
+
 public class Guest {
-    private String customerName;
-    private  String customerEmail;
-    private String customerId;
+    private final String customerName;
+    private final String customerEmail;
+    private final String customerId;
 
     public Guest(String customerName, String customerEmail, String customerId) {
         this.customerName = customerName;

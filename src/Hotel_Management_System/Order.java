@@ -1,5 +1,6 @@
+package Hotel_Management_System;
+
 import javax.swing.*;
-//import java.awt.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,7 +15,6 @@ public class Order extends JFrame {
     private JComboBox<String> complimentaryItemsCombo;
     private JComboBox<String> mainCourseCombo;
     private JComboBox<String> dessertsCombo;
-    private JButton orderButton;
     private JLabel totalLabel;
     private Map<String, Double> priceMap;
 
@@ -30,7 +30,7 @@ public class Order extends JFrame {
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        BackgroundPanel image = new BackgroundPanel("C:\\Users\\SHAHBAZ TRADERS\\IdeaProjects\\Project1\\src\\fast-food-restaurant-cartoon-3d-rendered-for-a_9829583.jpg.jpg!sw800");
+        BackgroundPanel image = new BackgroundPanel("Visuals/fast-food-restaurant-cartoon-3d-rendered-for-a_9829583.jpg.jpg!sw800");
         setContentPane(image);
         image.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -58,7 +58,7 @@ public class Order extends JFrame {
         dessertsCombo = new JComboBox<>(desserts);
 
         // Initialize button and label
-        orderButton = new JButton("Place Order");
+        JButton orderButton = new JButton("Place Order");
         totalLabel = new JLabel("Total: $0.00");
         totalLabel.setForeground(Color.WHITE);
 
@@ -133,7 +133,7 @@ public class Order extends JFrame {
         for (String item : order.getDesserts()) {
             total += priceMap.get(item);
         }
-        totalLabel.setText("Total: $" + String.format("%.2f", total));
+        totalLabel.setText(STR."Total: $\{String.format("%.2f", total)}");
     }
 
     public Date getOrderTime() {
@@ -153,12 +153,7 @@ public class Order extends JFrame {
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                new Order().setVisible(true);
-            }
-        });
+        SwingUtilities.invokeLater(() -> new Order().setVisible(true));
     }
 
     private void addComponentWithPanel(JPanel panel, String labelText, Component component, int gridy) {
@@ -178,7 +173,7 @@ public class Order extends JFrame {
 }
 
 class BackgroundPanel extends JPanel {
-    private Image backgroundImage;
+    private final Image backgroundImage;
 
     public BackgroundPanel(String imagePath) {
         backgroundImage = new ImageIcon(imagePath).getImage();
